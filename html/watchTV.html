@@ -1,0 +1,71 @@
+<!--#include file="includes/header.html" -->
+
+<div id="sub-header">
+        <!--#include file="includes/userbar.html" -->
+</div><!-- end #sub-header -->
+<script type="text/javascript">
+                
+ function loadChannels() 
+ {
+    var xobj = new XMLHttpRequest();
+    xobj.open('GET', 'channels.json', true);
+    xobj.onreadystatechange = function () {
+        if (xobj.readyState == 4) {
+            var jsonText = xobj.responseText;
+            createChannelTable(jsonText);
+        }
+    }
+    xobj.send(null);
+ }
+
+ function createChannelTable(jsonText) 
+ {
+   channelArray = JSON.parse(jsonText);
+   var channelTable = document.getElementById("channelGrid");
+
+   for (var ch in channelArray.channels) 
+   {
+     var newRow = channelTable.insertRow(-1);
+     var newCell0 = newRow.insertCell(0);
+
+     var source = channelArray.channels[ch].sourceId;
+     var link = "player.html?http://10.172.46.132:8080/vldms/tuner?ocap_locator=ocap://0x"+source;
+     newCell0.innerHTML = "<a href='"+link+"' class='tvButton'>Channel "+source+"</a>";
+     var newCell1 = newRow.insertCell(1);
+     newCell1.innerHTML = '<td align="center">'+channelArray.channels[ch].callNumber+'</td>';
+     var newCell2 = newRow.insertCell(2);
+     newCell2.innerHTML = '<td>'+channelArray.channels[ch].description+'</td>';
+
+   }
+
+}
+
+
+</script>
+<body onload="loadChannels()">
+        <header>
+                <h2>Watch TV</h2>
+        </header>
+        <nav>
+          <table id="channelGrid">
+            <tr>
+              <th></th>
+              <th>Call Number</th>
+              <th>Description</th>
+            </tr>
+          </table>
+          <p>
+          <a href="menu.html" class="button">Back</a>
+
+<!--      <h3>File contents:</h3>
+          <pre>
+            <code id="output">
+            </code>
+          </pre>
+-->
+        </nav>
+
+</body>
+</html>
+
+
