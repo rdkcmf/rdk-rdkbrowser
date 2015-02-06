@@ -18,8 +18,8 @@ contains(DEFINES, USE_DISPLAY_SETTINGS) {
        INCLUDEPATH += =${includedir}/rdk/ds \
                        =${includedir}/rdk/ds-hal \
                        =${includedir}/rdk/logger
-       SOURCES += ./servicemanager/src/services/displaysettingsservice.cpp
-       HEADERS += ./servicemanager/include/services/displaysettingsservice.h
+       SOURCES += $$(COMBINED_ROOT)/servicemanager/src/services/displaysettingsservice.cpp
+       HEADERS += $$(COMBINED_ROOT)/servicemanager/include/services/displaysettingsservice.h
        !contains(DEFINES,DISABLE_GENERIC_LOCAL_INPUT){
        SOURCES += platform/rdkemulator/src/localinput.cpp
        HEADERS += platform/rdkemulator/include/localinput.h

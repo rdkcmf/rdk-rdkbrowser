@@ -1,0 +1,12 @@
+[Unit]
+Description=RDK Browser
+DefaultDependencies=no
+
+[Service]
+ExecStart=/usr/bin/startBrowser
+ExecStopPost=/usr/sbin/gdisplay stop
+ExecReload=/bin/kill -HUP $MAINPID
+Type=idle
+
+[Install]
+WantedBy=multi-user.target

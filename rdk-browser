@@ -1,0 +1,64 @@
+#!/bin/sh
+
+### BEGIN INIT INFO
+# Provides:          rdk-browser
+# Should-Start:  
+# Required-Start:
+# Required-Stop:
+# Default-Start:     3 5
+# Default-Stop:
+# Short-Description: 
+### END INIT INFO
+
+. /lib/rdk/init-functions
+
+# Defaults can be overridden in this file
+INIT_SCRIPT_DEFAULTS_FILE="/etc/include.properties"
+
+# Load alternate configuration if exists
+if [ -f $INIT_SCRIPT_DEFAULTS_FILE ]; then
+     . $INIT_SCRIPT_DEFAULTS_FILE
+fi
+
+# Defaults
+INIT_SCRIPT_NAME="RDK-BROWSER"                      # full path to the executable
+INIT_SCRIPT_EXECUTABLE=""                            # options to pass to the executable 
+INIT_SCRIPT_OPTIONS=""                               # a decriptive name 
+INIT_SCRIPT_HOMEDIR="/"                              # place where to cd before running
+INIT_SCRIPT_PIDFILE=""                               # pid file name
+INIT_SCRIPT_LOGFILE=""                               # log file name 
+INIT_SLEEPTIME=""                                    # how long to wait for startup and shutdown
+ 
+
+start_function() {
+    pre_start "$INIT_SCRIPT_LOGFILE" ">>"
+    sh /usr/bin/startBrowser &
+    post_start $?
+    return 0
+}
+
+stop_function() {
+    pre_stop
+    killall rdkbrowser
+    killall remoteAppMgr
+    killall getip.sh
+    gdisplay stop
+    post_stop 0
+    return 0
+}
+ 
+case "$1" in
+  start)
+    start_function
+    ;;
+  stop)
+    stop_function
+    ;;
+  restart)
+    $0 stop && $0 start
+    ;;
+  *)
+    echo "Usage: $0 {start|stop|restart}"
+    exit 1
+  ;;
+esac
