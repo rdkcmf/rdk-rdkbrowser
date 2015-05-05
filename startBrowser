@@ -84,6 +84,8 @@ else
 fi
 #--------------------------------------------------
 
+touch /opt/rdkbrowser.qwebkit
+
 sh /opt/www/scripts/getip.sh &
 
 /usr/sbin/gdisplay start
