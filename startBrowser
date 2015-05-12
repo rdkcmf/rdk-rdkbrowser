@@ -84,6 +84,10 @@ else
 fi
 #--------------------------------------------------
 
+if [ -f /opt/www/whitebox/wbmac.dat ] ; then
+ln -s /usr/bin/wbdevice.dat /opt/www/whitebox/wbdevice.dat
+fi
+
 touch /opt/rdkbrowser.qwebkit
 
 sh /opt/www/scripts/getip.sh &
