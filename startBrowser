@@ -16,7 +16,12 @@ GST_PLUGIN_PATH=/lib/gstreamer-0.10:/usr/local/lib/gstreamer-0.10:/mnt/nfs/gstre
 #GST_PLUGIN_PATH=/lib/gstreamer-0.10:/gstreamer-plugins:/mnt/nfs/gstreamer-plugins
 export GST_PLUGIN_PATH GST_PLUGIN_SCANNER GST_REGISTRY                                     
 export PATH HOME LD_LIBRARY_PATH 
+branch=`cat /version.txt | grep ^BRANCH | cut -d "=" -f 2`
 
+if [ "$branch" != "master" ] ; then
+echo "It is CMF Build" >> /var/volatile/log/rdkbrowser.log
+export USE_GENERIC_GSTREAMER_TEE=TRUE
+fi
 export EGL_PLATFORM=fbdev
 export QT_QPA_EGLFS_DEPTH=32
 #fbset -fb /dev/fb0 -g 1024 768 1024 768 32
