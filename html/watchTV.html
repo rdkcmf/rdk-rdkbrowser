@@ -29,7 +29,7 @@
      var newCell0 = newRow.insertCell(0);
 
      var source = channelArray.channels[ch].sourceId;
-     var link = "player.html?http://10.172.46.132:8080/vldms/tuner?ocap_locator=ocap://0x"+source;
+     var link = "player.html?http://127.0.0.1:8080/vldms/tuner?ocap_locator=ocap://0x"+source;
      newCell0.innerHTML = "<a href='"+link+"' class='tvButton'>Channel "+source+"</a>";
      var newCell1 = newRow.insertCell(1);
      newCell1.innerHTML = '<td align="center">'+channelArray.channels[ch].callNumber+'</td>';
