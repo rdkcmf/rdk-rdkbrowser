@@ -1,7 +1,71 @@
 <html>
+<head>
+<script>
+function keyPress(event)
+{
+try{
+
+if (event.keyCode ==32)
+{
+console.log("inside function");
+        var http = new XMLHttpRequest();
+
+        console.log("sending http request");
+        http.open("GET", "http://127.0.0.1:50050/scripts/console-start.sh", false);
+        http.onreadystatechange = function() {
+		console.log("state changed");
+                if( http.readyState ==4 && http.status==200 ) {
+			console.log("request completed, response is: "+http.responseText);
+			if(http.responseText == "GDISPLAY-STARTED") 
+			{
+				console.log("response is GDISPLAY-STARTED");
+				document.getElementById("demo").value = "CONSOLE START";
+			}
+			else
+			{
+				console.log("response is GDISPLAY-STOPPED");
+				document.getElementById("demo").value = "CONSOLE STOP";
+			}
+		}
+        }
+	http.send();
+}
+}catch(e) {console.log("keyPress exception: "+e);}
+}
+
+function checkStatus()
+{
+try
+{
+	console.log("inside check status");
+        var http = new XMLHttpRequest();
+
+        console.log("sending http request to check .toggle");
+        http.open("GET", "http://127.0.0.1:50050/.toggle", false);
+        http.onreadystatechange = function() 
+	{
+                	if( http.readyState ==4 && http.status==200 ) 
+			{
+                              console.log("CONSOLE ALREADY STARTED");   
+                             document.getElementById("demo").value = "CONSOLE STOP";
+                        }
+                        else
+                        {
+                                console.log("CONSOLE ALREADY STOPPED");
+                                document.getElementById("demo").value = "CONSOLE START";
+                        }
+        }
+        http.send();
+}catch(e) {console.log("keyPress exception: "+e);}
+}
+
+</script>
+</head>
 <body>
 <h1>
 IP Address:
 </h1>
+<input type="button" id="demo" value="EMULATOR-CONSOLE" onkeypress="keyPress(event);" />
 </body>
 <html>
+
