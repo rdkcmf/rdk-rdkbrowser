@@ -13,6 +13,7 @@ do
          loop=0
         # do inplace replace of html file
         sed -i -e  "s/IP Address\:.*$/IP Address\: ${ipaddr}/g" /opt/www/deviceinfo.html
+        touch /tmp/ip_acquired 
         fi
 
 done
