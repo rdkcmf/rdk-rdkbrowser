@@ -7,13 +7,16 @@ loop=1
 while [ $loop -eq 1 ]
 do
         ipaddr=`ifconfig | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0.1'`
-
+	name=`uname -n`
 
         if [ "$ipaddr" ]; then
          loop=0
         # do inplace replace of html file
         sed -i -e  "s/IP Address\:.*$/IP Address\: ${ipaddr}/g" /opt/www/deviceinfo.html
-        touch /tmp/ip_acquired 
+        touch /tmp/ip_acquired
+	rm /etc/hosts
+	echo "127.0.0.1       localhost.localdomain           localhost" > /etc/hosts
+	echo "$ipaddr $name " >> /etc/hosts 
         fi
 
 done
