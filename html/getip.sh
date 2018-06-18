@@ -38,3 +38,13 @@ do
         fi
 
 done
+
+if [ -f /opt/www/whitebox/wbdevice.dat -a -f /opt/www/whitebox/wbmac.dat ] ; then
+        echo "Already wbdevice.dat is present."
+
+elif [  -f /opt/www/whitebox/wbmac.dat  -a ! -f /opt/www/whitebox/wbdevice.dat ] ; then
+        ln -s /usr/bin/wbdevice.dat /opt/www/whitebox/wbdevice.dat
+
+else
+        echo "Failed to create wbdevice.dat in whitebox or it is not a whitebox image."
+fi
