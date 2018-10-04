@@ -1,0 +1,63 @@
+<!--
+ If not stated otherwise in this file or this component's Licenses.txt file the
+ following copyright and licenses apply:
+
+ Copyright 2017 RDK Management
+
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+ http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-->
+<html>
+<head>
+<body  bgcolor="white" onload="load()">
+<title>Demo: HTML5 video controls with JavaScript</title>
+<style media="screen" type="text/css">
+div.container { background-color: #ddd; margin: 0 0 20px; padding: 1px 1px 0; width: 1000px; }
+    p { font: 14px/1.3 Verdana, sans-serif; }
+    p.back { bottom: 20px; left: 10px; position: absolute; }
+ul, li, p { margin: 0; padding: 0; }
+ul { list-style: none; overflow: hidden; padding: 10px 0; width: 100%; }
+li { float: left; }
+li.play_pause { padding-left: 10px; width: 50px; }
+li.time { text-align: center; width: 160px; }
+li.volume { padding-right: 10px; width: 120px; }
+.control { color: red; cursor: pointer; }
+</style>
+</head>
+<body>
+
+<div class="container">
+<table align="center" border="1"><tr><td>
+
+<video id="video" width="640" height="360" autoplay>
+    <source src="http://127.0.0.1:50050/mux1-cp.ts" />
+        <p>Cannot load video.</p>
+</video>
+
+</td></tr></table>
+
+<hr />
+<ul class="controls">
+    <li class="play_pause"><p class="control" id="play">Play</p></li>
+    <li class="play_pause"><p class="control" id="seekb">[-15s]</p></li>
+    <li class="play_pause"><p class="control" id="seekf">[+15s]</p></li>
+    <li class="play_pause"><p class="control" id="scale">Scale</p></li>
+    <li class="play_pause"><p class="control" id="rew">Rewind</p></li>
+    <li class="play_pause"><p class="control" id="ffw">F.Fwd</p></li>
+
+    <li class="time"><p><span id="timer">1</span>' of <span id="duration">0</span>'</p></li>
+    <li class="volume"><p>Vol: <span class="control" id="v-dn" title="Volume down">[-]</span> / <span class="control" id="v-up" title="Volume up">[+]</span> <span id="volume">10</span></p></li>
+</ul>
+</div>
+
+</body>
+</html>

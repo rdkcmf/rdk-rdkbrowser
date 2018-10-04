@@ -1,0 +1,303 @@
+<!--
+ If not stated otherwise in this file or this component's Licenses.txt file the
+ following copyright and licenses apply:
+
+ Copyright 2017 RDK Management
+
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+ http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>Untitled Document</title>
+        <style type="text/css">
+            <!--
+            html, body{
+            height:100%;
+            }
+
+            body {
+            font: 100%/1.4 "Arial Narrow", Arial, sans-serif;
+            background: #d6e3e7;
+            margin: 0;
+            padding: 0;
+            color: #000;
+            overflow:hidden;
+            }
+
+            ul, ol, dl {
+            padding: 0;
+            margin: 0;
+            }
+
+            h1, h2, h3, h4, h5, h6, p {
+            margin-top: 0;
+            }
+
+            a img {
+            border: none;
+            }
+            a:link {
+            color: #01415b;
+            text-decoration: underline;
+            }
+            a:visited {
+            color: #01415b;
+            text-decoration: underline;
+            }
+            a:active, a:focus {
+            color: #0cb2dd;
+            text-decoration: none;
+            }
+
+            .header {
+            background: #01415b;
+            width:100%;
+            height:75px;;
+            color:#fff;
+            position:absolute;
+            top:0px;
+            padding-top:2%;
+            }
+
+            .contentwrapper{
+            width:100%;
+            position:absolute;
+            top:20%;
+            height:85%;
+            }
+
+            .content {
+            height:100%;
+            margin:20px;
+            }
+
+            .footer {
+            background: #01415b;
+            color:#fff;
+            width:100%;
+            height:25px;
+            position:absolute;
+            bottom:0px;
+            padding-left:2.3%;
+            padding-bottom:1%;
+            padding-top:1%;
+            }
+
+            .buttoncolumn{
+            width:10%;
+            height:auto;
+            text-align:center;
+            margin-right:0.1%;
+            margin-left:0.1%;
+            display:inline-block;
+            }
+
+            .button{
+            width:85%;
+            height:auto;
+            background-image: linear-gradient(bottom, rgb(146,162,167) 0%, rgb(208,223,227) 100%);
+            background-image: -o-linear-gradient(bottom, rgb(146,162,167) 0%, rgb(208,223,227) 100%);
+            background-image: -moz-linear-gradient(bottom, rgb(146,162,167) 0%, rgb(208,223,227) 100%);
+            background-image: -webkit-linear-gradient(bottom, rgb(146,162,167) 0%, rgb(208,223,227) 100%);
+            background-image: -ms-linear-gradient(bottom, rgb(146,162,167) 0%, rgb(208,223,227) 100%);
+
+            background-image: -webkit-gradient(
+            linear,
+            left bottom,
+            left top,
+            color-stop(0, rgb(146,162,167)),
+            color-stop(1, rgb(208,223,227))
+            );
+            -moz-border-radius: 15px;
+            border-radius: 15px;
+            border: 2px solid white;
+            }
+
+            .button img{
+            width:100%;
+            }
+
+            a:focus .button{
+            background-image: linear-gradient(bottom, rgb(9,139,171) 0%, rgb(56,205,242) 100%);
+            background-image: -o-linear-gradient(bottom, rgb(9,139,171) 0%, rgb(56,205,242) 100%);
+            background-image: -moz-linear-gradient(bottom, rgb(9,139,171) 0%, rgb(56,205,242) 100%);
+            background-image: -webkit-linear-gradient(bottom, rgb(9,139,171) 0%, rgb(56,205,242) 100%);
+            background-image: -ms-linear-gradient(bottom, rgb(9,139,171) 0%, rgb(56,205,242) 100%);
+
+            background-image: -webkit-gradient(
+            linear,
+            left bottom,
+            left top,
+            color-stop(0, rgb(9,139,171)),
+            color-stop(1, rgb(56,205,242))
+            );
+            border: 2px solid #a5e9fb;
+            }
+			#link
+				{
+					border:0;
+					outline:none;
+				}
+
+            -->
+        </style>
+        <script>
+            var imageNodeList;
+            var imageIdList = [];
+            var currentIndex = "0,0", prevIndex = "", KEY_LEFT = 37, KEY_UP = 38, KEY_RIGHT = 39, KEY_DOWN = 40, KEY_OK = 13;
+
+            function initialise() {
+                document.onkeydown = keyEvents;
+                selectElement();
+            }
+
+            function getElement() {
+                var a = document.getElementsByTagName("a");
+                for (var i = 0; i < a.length; i++) {
+                    if (a[i].getAttribute("touchIndex") === currentIndex) {
+                        return a[i];
+                    }
+                };
+
+                return null;
+            }
+
+            function selectElement() {
+                var element = getElement();
+                if (element) {
+                    element.focus();
+                } else {
+                    currentIndex = prevIndex;
+                    selectElement();
+                }
+            }
+
+            function updateIndex(left, up, right, down) {
+                if (!currentIndex) {
+                    return false;
+                }
+                prevIndex = currentIndex;
+
+                var index = currentIndex.split(",");
+                for (var i = 0; i < index.length; i++) {
+                    index[i] = parseInt(index[i], 10);
+                };
+                if (left === 1) {
+                    if (index[1] != 0) {
+                        index[1]--;
+                    }
+                } else if (up === 1) {
+                    if (index[0] != 0) {
+                        index[0]--;
+                    }
+                } else if (right === 1) {
+                    index[1]++;
+                } else if (down === 1) {
+                    index[0]++;
+                }
+                currentIndex = index.toString();
+                selectElement();
+            }
+
+            function keyEvents(ev) {
+                var code = ev.keyCode;
+                switch(code) {
+                    case KEY_LEFT:
+                        updateIndex(1, 0, 0, 0);
+                        break;
+                    case KEY_UP:
+                        updateIndex(0, 1, 0, 0);
+                        break;
+                    case KEY_RIGHT:
+                        updateIndex(0, 0, 1, 0);
+                        break;
+                    case KEY_DOWN:
+                        ;
+                        updateIndex(0, 0, 0, 1);
+                        break;
+                }
+                return true;
+
+            }
+
+        </script>
+    </head>
+
+    <body onLoad="initialise();">
+
+        <div class="header">
+            <img style="float:right; margin-right:2.3%;" src="ComcastLogo.png" />
+            <h1 style="margin-left:2.3%;">Comcast Set Top Box Developer Edition</h1>
+        </div>
+        <div class="contentwrapper">
+            <div style="width:60%; margin:0px auto 40px auto;"><img src="Remote.png" style="float:left;" />Welcome to the Comcast Set Top Box Developer Edition(CSTBDE).  On this page, you can access important resources like a Readme and the Code Download Server(CDL).  But, you can also access apps like iHeartRadio and Baeble Music.
+                <br/>
+                <br/>
+                Please use the Remote Control left/right keys for navigation and the "Enter" key to select an application. The "Info" key helps you gain focus of the main menu and shows the highlighted application in blue color. While entering text, you can use the "Exit" key as backspace to delete a wrong entry.
+            </div>
+            <div class="content">
+                <a id="link" href="About.html" touchIndex="0,0">
+                <div id="ReadMe" class="buttoncolumn">
+                    <div class="button" ><img src="About.png" />
+                    </div><h5>Readme</h5>
+                </div></a>
+                <a id="link" href="https://www.rdk4apps.com:8055/ComcastRdkWebApp/downloadrequestform.jsp" touchIndex="0,1">
+                <div id="CDLServer" class="buttoncolumn">
+                    <div class="button"><img src="CDLServer.png" />
+                    </div><h5>CDL</h5>
+                </div></a>
+                <!-- a id="link" href="player.html" touchIndex="0,2" -->
+                <a id="link" href="watchTV.html" touchIndex="0,2" >
+                <div id="WatchTV" class="buttoncolumn">
+                    <div class="button"><img src="SampleVideo.png" />
+                    <!-- /div><h5>Sample Video</h5 -->
+                    </div><h5>WatchTV App</h5>
+                </div></a>
+                <a id="link" href="http://www.iheart.com/tv/" touchIndex="0,3">
+                <div id="iHeartRadio" class="buttoncolumn">
+                    <div class="button"><img src="iHeart.png" />
+                    </div><h5>iHeartRadio</h5>
+                </div></a>	
+                <a id="link" href="deviceinfo.html" touchIndex="0,4">
+                <div id="Baeble" class="buttoncolumn">
+                    <div class="button"><img src="ReadMe.png" />
+                    </div><h5>Device Info</h5>
+                </div></a>
+               <a id="link" href="http://syndeo.xcal.tv/app/x2prod/index.minify.html?login=false" touchIndex="0,5">
+                <div id="X2Guide" class="buttoncolumn">                                                                  
+                    <div class="button"><img src="XfinityTV.png" />
+                    </div><h5>X2 Guide</h5>       
+                </div></a>				
+		<a id="link" href="sample-video.html" touchIndex="0,6">
+                <div id="SampleVideo" class="buttoncolumn">
+                    <div class="button"><img src="SampleVideo.png" />
+                    </div><h5>Sample Video</h5>
+                </div></a>
+                <a id="link" href="resolutionsettings.html" touchIndex="0,7">
+                <div id="DeviceSettings" class="buttoncolumn">
+                    <div class="button"><img src="ReadMe.png" />
+                    </div><h5>DeviceSettings</h5>
+                </div></a>
+
+            </div>
+        </div>
+        <div class="footer">
+            <p>
+                For support, visit www.RDK4Apps.com/Forum
+            </p>
+        </div>
+
+    </body>
+</html>

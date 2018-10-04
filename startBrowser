@@ -1,0 +1,103 @@
+#!/bin/sh
+
+mkdir -p /opt/QT/tmp
+export XDG_CONFIG_HOME=/opt/.config
+export QWS_DATA_HOME=/opt/QT/home
+export QWS_CACHE_HOME=/opt/QT/cache
+export QWS_TMP_PATH=/opt/QT/tmp
+export QTWEBKIT_PLUGIN_PATH=/usr/local/qt/lib/webkit
+export FLASH_TEMP=/opt/flashtmp
+export FLASH_MACROMEDIA_DIR=/opt/.macromedia
+export FLASH_ADOBE_DIR=/opt/.adobe
+#export LD_LIBRARY_PATH=/usr/local/qt/lib:/usr/local/lib:/usr/lib:/lib/:/gstreamer-plugins:.
+LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/opt/hold:/lib:/usr/local/qt/lib:/usr/local/lib:/mnt/nfs/bin/target-snmp/lib:/usr/local/lib/gstreamer-0.10/
+GST_PLUGIN_PATH=/lib/gstreamer-0.10:/usr/local/lib/gstreamer-0.10:/mnt/nfs/gstreamer-plugins
+
+#GST_PLUGIN_PATH=/lib/gstreamer-0.10:/gstreamer-plugins:/mnt/nfs/gstreamer-plugins
+export GST_PLUGIN_PATH GST_PLUGIN_SCANNER GST_REGISTRY                                     
+export PATH HOME LD_LIBRARY_PATH 
+branch=`cat /version.txt | grep ^BRANCH | cut -d "=" -f 2`
+
+if [ "$branch" != "master" ] ; then
+echo "It is CMF Build" >> /var/volatile/log/rdkbrowser.log
+export USE_GENERIC_GSTREAMER_TEE=TRUE
+fi
+export EGL_PLATFORM=fbdev
+export QT_QPA_EGLFS_DEPTH=32
+#fbset -fb /dev/fb0 -g 1024 768 1024 768 32
+
+#export QT_QPA_EGLFS_HIDECURSOR=1
+export QT_QPA_EVDEV_MOUSE_PARAMETERS="/dev/input/event3"
+export QT_QPA_EGLFS_DISABLE_BACKINGSTORE_FLUSH=1
+
+QT_WEBKIT_LOG=Media
+
+export QT_QPA_FONTDIR=/usr/share/fonts
+export FONTCONFIG_PATH=/etc/fonts
+export FONTCONFIG_FILE=/etc/fonts/fonts.conf
+
+#----------------- Logic to load page from USB stick -------------------
+useOverrideHtml=0
+useOverrideURL=0
+cat /proc/partitions | grep sda > /dev/null
+if [ $? -eq 0 ] ; then 
+  echo "USB detected.. checking to see if boot_url.txt present"
+  mount | grep /tmp/usb > /dev/null
+  if [ $? -ne 0 ] ; then 
+    echo "USB is not mounted "
+    mkdir /tmp/usb >> /dev/null
+    cat /proc/partitions | grep sda1 > /dev/null
+    if [ $? -eq 0 ] ; then
+      mount /dev/sda1 /tmp/usb > /dev/null
+    else
+      mount /dev/sda /tmp/usb > /dev/null
+    fi
+    usbMounted=$?
+  else
+    echo "USB is already mounted"
+    usbMounted=0
+  fi
+
+  if [ $usbMounted -eq 0 ] ; then
+    if [ -f /tmp/usb/boot_url.conf ] ; then
+      url_link=`grep -v '^[[:space:]]*#' /tmp/usb/boot_url.conf`
+      #url_link=`cat /tmp/usb/boot_url.txt | grep URL | tr -d " " | cut -d "=" -f2`
+      if [ "x$url_link" = "x" ] ; then
+        echo invalid url or no url present so ignoring
+      else
+        echo override url=$url_link is present
+        useOverrideURL=1
+        #exit 1
+      fi
+    fi
+    # check for default menu.html file
+    if [ -f /tmp/usb/menu.html ] ; then
+      echo override menu.html is present it will launch this page
+      useOverrideHtml=1
+    fi
+  fi
+fi
+
+#cd /rdkbrowser
+
+if [ $useOverrideURL -eq 1 ] ; then
+  url=$url_link
+elif [ $useOverrideHtml -eq 1 ] ; then
+  url=http://127.0.0.1:8082/ExtMenu.html
+else
+  url=http://127.0.0.1:50050/menu.html
+fi
+#--------------------------------------------------
+
+if [ -f /opt/www/whitebox/wbmac.dat ] ; then
+ln -s /usr/bin/wbdevice.dat /opt/www/whitebox/wbdevice.dat
+fi
+
+touch /opt/rdkbrowser.qwebkit
+
+sh /opt/www/scripts/getip.sh &
+
+/usr/sbin/gdisplay start
+
+echo ============== rdkbrowser coming up with following url $url ================== > /var/volatile/log/rdkbrowser.log
+/usr/bin/rdkbrowser --path=$url >> /var/volatile/log/rdkbrowser.log 2>&1

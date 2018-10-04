@@ -1,0 +1,111 @@
+<!--
+ If not stated otherwise in this file or this component's Licenses.txt file the
+ following copyright and licenses apply:
+
+ Copyright 2017 RDK Management
+
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+ http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<body  bgcolor="white" onload="load()">
+<!--#include file="includes/header.html" -->
+
+<div id="sub-header">
+        <!--#include file="includes/userbar.html" -->
+</div><!-- end #sub-header -->
+<script type="text/javascript">
+
+var downloadIP="20.20.0.1"
+var boxIP="20.20.1.1"
+var modelNum="PX001AN"
+var buildType="DEV"
+
+function load()
+{
+  getDeviceInfo()
+
+  var statusId = document.getElementById("model");
+  statusId.innerHTML = "Box Model = " + modelNum;
+
+    var statusId = document.getElementById("dev");
+  statusId.innerHTML = "Build Type = " + buildType;
+
+    var statusId = document.getElementById("ip");
+  statusId.innerHTML = "Box IP = " + boxIP;
+
+
+}
+function getDeviceInfo()
+{
+    var service = ServiceManager.getServiceForJavaScript("deviceSettingService");
+    downloadIP = service.getDeviceInfo("downloadIP");
+    boxIP = service.getDeviceInfo("boxIP");
+    modelNum = service.getDeviceInfo("MODEL_NUM")
+    buildType = service.getDeviceInfo("BUILD_TYPE")
+}
+</script>
+<body onload="load()">
+        <header>
+				<h1>README</h1>
+				<b>Contents</b><p>
+				1. Introduction<br>
+				2. Using the Built-in Applications<br>
+				3. Loading Custom Applications<br>
+				4. Peripherals Supported<p>
+				<b>1. Introduction</b><br>
+				The Comcast Set-Top Box Developer Edition (CSTBDE) is intended to provide application developers a platform for developing and testing RDK applications. The kit comes with a Humax RDK Internet Protocol (IP) Client Set Top Box (STB), power adaptor, serial cable and remote control. The STB comes with a built-in browser and provides users with the ability to playback online video content and run custom HTML5 applications. When powered on, the STB boots up to the RDK Browser and loads a built-in menu. Users can browse the menu to choose the appropriate application.
+				The CSTBDE kit provides Web developers with a new target platform that brings together the world of television viewers and online application users.  The Client STB is fully capable of being used as a traditional set top box in the home of a cable television subscriber in addition to being a standards-based, networked, full-featured browser that can run HTML5 applications.
+				The CSTBDE program members receive the hardware kit as well as access to the online discussion forum and the Code Download Server (CDL Server).  The discussion forums connect CSTBDE members with one another to share code and ideas.  The CDL Server provides software updates for the STB that keeps it current with the latest RDK software.<p>
+				<b>2. Using the Built-in Applications</b><br>
+				The menu includes links to the following applications:<br>
+				2.1. Readme<br>
+				2.2. Code Download (CDL)<br>
+				2.3. Sample Video <br>
+				2.4. iHeartRadio<br>
+				2.5. Baeble Music<br>
+				This section describes the applications in more detail.<p>
+				<b>2.1 Readme</b><br>
+				This readme provides instructions on how to start using the box and how to make use of its features.<p>
+				<b>2.2 Code Download (CDL)</b><br>
+				Code Download connects users to the CDL Server that provides the latest software for the RDK STB.  Users should login to the CDL Server using the login PIN provided with your CSTBDE kit. If the user enters a wrong PIN numeral, the "Exit" key works as "Backspace" to delete the wrong pin numeral. Users can then browse the available images on the server.
+				The CDL Server lists each available image, version, release date and release notes.  This list is ordered so that the most recent software is shown at the top of the list.  The image name displayed on the bottom of the page shows the version of the software that is currently running on your STB.  This information helps the user to identify newer images that may contain new features and bug fixes.  If the image currently running on the STB is in the list, then that row is highlighted in the list.  Software images above that row are newer and those listed below that row are older software versions.
+				The CDL server also provides release information against each image that describes the software changes, bug fixes and new features in the image. Users can make use of this information to decide on which image to choose for the upgrade.  In general, the most recent image will provide the most features, best compliance with standards and most bug fixes than older software images so users will want to upgrade to the most recent image.  However, a user may prefer to remain on an older image to continue development on a known version of the software until the feature under development is tested and ready for migration to a later version.<p>
+				<b>2.3 Sample Video</b><br>
+				Sample Video is an HTML5 reference video player which plays back video content from an HTML5 Video test site. The player is built into the RDK STB and the source code for this Sample Video is provided to CSTBDE members as an example of how simple it is to use the platform for delivering video content. Users can refer this application and make changes as needed to playback custom video content.<p>
+				<b>2.4 iHeartRadio</b><br>
+				iHeartRadio is an application that provides online radio content.<p>
+				<b>2.5 Baeble Music</b><br>
+				Baeble Music provides access to browse and playback music video content on the RDK STB.  The RDK STB’s browser can be used to select and play video content from the Baeble music website.<p>
+				<b>3. Loading Custom Applications</b><br>
+				You can load your applications on the RDK STB.  This requires a computer and a USB stick.<br>
+				•	Format the USB stick.<br>
+				•	Create a plain text file named ‘boot_url.conf’ that contains the URL of your application<br>
+				•	Alternatively, you can copy your own html file to the root directory of the USB stick and name it ‘menu.html’<br>
+				•	Be sure to eject the USB stick properly so that the file system is not damaged.<br>
+				•	Insert the USB stick into the RDK STB’s USB port on the rear of the RDK STB. <br>
+				•	Re-boot the RDK STB by pulling out the power cord for 2 seconds then re-inserting it.<br>
+				When the RDK STB re-boots it will load your application using the URL found in the file on the USB stick instead of the main menu.  There is no restriction on the URL that can be specified this way, so you can load applications that you design and develop as well as any application that can be reached on the internet.<p>
+				<b>4. Peripherals Supported</b><br>
+				The Set-Top Box has a built-in USB port that allows connection to USB memory sticks, keyboards and mouse. By connecting a USB hub, users can plug-in multiple USB devices at once.
+        </header>
+        <nav>
+<p id="model">
+<p id="dev">
+<p id="ip">
+        </nav>
+
+</body>
+<!--#include file="includes/footer.html" -->
+</html>
+
+
